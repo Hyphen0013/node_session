@@ -10,19 +10,20 @@
         </div>
 
         <% if (message != '') { %>
-            <p class="text-center text-danger"><%= message %></p>
+        <p class="text-center text-danger"><%= message %></p>
         <% } %>
 
         <!-- FORM -->
-        <form class="pt-3" action=""  method="POST">
-           
+        <form class="pt-3" action="" method="POST" enctype="multipart/form-data">
+
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" name="username" class="form-control" id="username" placeholder="Enter unique uername">
+                <input type="text" name="username" class="form-control" id="username"
+                    placeholder="Enter unique uername">
             </div>
 
-             <!-- EMAIL -->
-             <div class="form-group">
+            <!-- EMAIL -->
+            <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" name="email" class="form-control" id="email" placeholder="Enter password">
             </div>
@@ -34,7 +35,19 @@
             </div>
             <div class="form-group">
                 <label for="password1">Confirm Password</label>
-                <input type="password" name="password1" class="form-control" id="password1" placeholder="Confirm password">
+                <input type="password" name="password1" class="form-control" id="password1"
+                    placeholder="Confirm password">
+            </div>
+            <div class="form-group">
+                <label for="phone">Contact Number</label>
+                <input type="number" name="phone" class="form-control" id="phone"
+                    placeholder="Enter contact number">
+            </div>
+
+            <!-- IMAGE -->
+            <div class="form-group">
+                <label for="avtar">Browse image</label>
+                <input type="file" name="avtar" class="form-control-file" id="avtar">
             </div>
 
 

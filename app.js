@@ -1,14 +1,16 @@
+const fileUpload = require('express-fileupload');
 const express = require('express');
 const session = require('express-session');
 var cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
+const bcrypt = require('bcrypt');
 
 const keys = require('./config/keys');
 
 // Get all routes js file
 const { homePage } = require('./routes/index'); // index.js
-const { registerPage, userRegister } = require('./routes/users'); // users.js
+const { registerPage, userRegister, userLogin } = require('./routes/users'); // users.js
 
 
 const app = express();
@@ -40,9 +42,10 @@ app.use(session({
 }));
 
 // body-parser middleware
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(fileUpload());
 
 
 
@@ -50,6 +53,7 @@ app.use(cookieParser());
 // Routes
 app.get('/', homePage);
 app.get('/register', registerPage);
+app.get('/login', userLogin);
 
 app.post('/register', userRegister);
 
