@@ -1,6 +1,7 @@
 const fs = require('fs');
 const bcrypt = require('bcrypt');
 const mysql = require('mysql');
+const passport = require('passport');
 
 
 module.exports = {
@@ -101,11 +102,16 @@ module.exports = {
 
                                 db.query(queryInsert, [username, email, hash, phone, image_name], (err, result, fields) => {
                                     if (err) throw err;
+                                    
+                                    db.query("SELECT LAST_INSERT_ID() as user_id", (err, result, fields) => {
+                                        if (err) throw err;
 
-                                    res.redirect('/login');
+                                        const user_id = JSON.stringify(result[0]);
+                                        req.login(user_id, (err) => {
+                                            res.redirect('/login');
+                                        });
+                                    });
                                 });
-
-
                             });
                         }
                     }
@@ -117,15 +123,28 @@ module.exports = {
         }
     },
 
-
-
-
+    userProfile: (req, res) => {
+        errors = [];
+        res.render('pages/profile.ejs', {
+            title: 'User Profile'
+        });
+    },
 
     userLogin: (req, res) => {
         res.render('pages/login.ejs', {
             title: 'Login Page'
         })
     }
-
-
 }
+
+
+passport.serializeUser(function (user_id, done) {
+    console.log('Serialize: ' + user_id)
+    done(null, user_id);
+});
+
+passport.deserializeUser(function (user_id, done) {
+    done(null, user_id);
+});
+
+
