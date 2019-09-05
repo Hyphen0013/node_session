@@ -18,6 +18,8 @@
     "express-mysql-session": "^2.1.0",
     "express-session": "^1.16.2",
     "mysql": "^2.17.1",
-    "passport": "^0.4.0"
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-session": "^1.0.2"
   }
 }

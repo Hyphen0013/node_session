@@ -1,6 +1,6 @@
 const fs = require('fs');
-const bcrypt = require('bcrypt');
 const mysql = require('mysql');
+const bcrypt = require('bcrypt');
 const passport = require('passport');
 
 
@@ -78,8 +78,7 @@ module.exports = {
 
 
             const usernameQuery = "SELECT * FROM users WHERE username = '" + username + "' ";
-            const saltRounds = 10;
-            bcrypt.hash(password, saltRounds, function (err, hash) {
+            bcrypt.hash(password, 10, function (err, hash) {
 
                 db.query(usernameQuery, (err, result) => {
 
@@ -106,7 +105,7 @@ module.exports = {
                                     db.query("SELECT LAST_INSERT_ID() as user_id", (err, result, fields) => {
                                         if (err) throw err;
 
-                                        const user_id = JSON.stringify(result[0]);
+                                        const user_id = result[0];
                                         req.login(user_id, (err) => {
                                             res.redirect('/login');
                                         });
@@ -132,14 +131,28 @@ module.exports = {
 
     userLogin: (req, res) => {
         res.render('pages/login.ejs', {
-            title: 'Login Page'
+            title: 'Login Page',
+            message: ''
+        });
+    },
+
+    userLoginPost: (passport.authenticate ('local', {
+            successRedirect: '/profile',
+            failureRedirect: '/login'
+
         })
+    ),
+    
+    userLogout: (req, res) => {
+        req.logout();
+        req.session.destroy();
+        res.redirect('/');
     }
+
 }
 
 
 passport.serializeUser(function (user_id, done) {
-    console.log('Serialize: ' + user_id)
     done(null, user_id);
 });
 
